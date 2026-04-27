@@ -97,3 +97,29 @@ def reset_mac(interface):
 
     except subprocess.CalledProcessError:
         return False
+
+def get_interfaces():
+    try:
+        result = subprocess.run(
+            ["ip", "link", "show"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        interfaces = []
+
+        for line in result.stdout.split("\n"):
+            if ": " in line:
+                parts = line.split(": ")
+                if len(parts) > 1:
+                    name = parts[1].split("@")[0]
+                    
+                    # Skip loopback
+                    if name != "lo":
+                        interfaces.append(name)
+
+        return interfaces
+
+    except subprocess.CalledProcessError:
+        return []
