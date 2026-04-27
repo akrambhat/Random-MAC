@@ -45,3 +45,34 @@ def validate_mac(mac):
     """
     pattern = r"^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$"
     return re.match(pattern, mac) is not None
+
+def change_mac(interface, new_mac):
+    """
+    Change MAC address of a given interface.
+    """
+    if not validate_mac(new_mac):
+        raise ValueError("Invalid MAC address format")
+
+    try:
+        # Bring interface down
+        subprocess.run(
+            ["sudo", "ip", "link", "set", "dev", interface, "down"],
+            check=True
+        )
+
+        # Change MAC
+        subprocess.run(
+            ["sudo", "ip", "link", "set", "dev", interface, "address", new_mac],
+            check=True
+        )
+
+        # Bring interface up
+        subprocess.run(
+            ["sudo", "ip", "link", "set", "dev", interface, "up"],
+            check=True
+        )
+
+        return True
+
+    except subprocess.CalledProcessError:
+        return False
