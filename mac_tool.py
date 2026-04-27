@@ -30,11 +30,14 @@ def main():
             print("[-] Could not retrieve MAC")
 
     elif args.random:
+        old_mac = get_current_mac(interface)
         new_mac = generate_mac()
+
         success = change_mac(interface, new_mac)
 
         if success:
-            print(f"[+] Random MAC applied: {new_mac}")
+            updated_mac = get_current_mac(interface)
+            print(f"[+] MAC changed: {old_mac} → {updated_mac}")
         else:
             print("[-] Failed to change MAC")
 
@@ -43,10 +46,13 @@ def main():
             print("[-] Invalid MAC format")
             return
 
+        old_mac = get_current_mac(interface)
+
         success = change_mac(interface, args.set)
 
         if success:
-            print(f"[+] MAC changed to: {args.set}")
+            updated_mac = get_current_mac(interface)
+            print(f"[+] MAC changed: {old_mac} → {updated_mac}")
         else:
             print("[-] Failed to change MAC")
 
