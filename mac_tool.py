@@ -13,16 +13,34 @@ from mac_utils import (
 def main():
     parser = argparse.ArgumentParser(description="MAC Address Tool")
 
-    parser.add_argument("--interface", required=True, help="Network interface (e.g., wlan0)")
+    parser.add_argument("--interface", help="Network interface (e.g., wlan0)")
     parser.add_argument("--random", action="store_true", help="Generate and apply random MAC")
     parser.add_argument("--set", help="Set a custom MAC address")
     parser.add_argument("--reset", action="store_true", help="Reset MAC address")
     parser.add_argument("--show", action="store_true", help="Show current MAC address")
+    parser.add_argument("--list", action="store_true", help="List available network interfaces")
 
     args = parser.parse_args()
 
+    if args.list:
+        interfaces = get_interfaces()
+
+        if interfaces:
+            print("[+] Available interfaces:")
+            for iface in interfaces:
+                print(f"  - {iface}")
+        else:
+            print("[-] No interfaces found")
+
+        return
+
+    if not args.interface:
+        print("[-] Interface is required for this operation. Use --list to see available interfaces.")
+        return
+
     interface = args.interface
 
+    # interface validation
     available_interfaces = get_interfaces()
 
     if interface not in available_interfaces:
