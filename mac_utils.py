@@ -1,4 +1,27 @@
-import random, re
+import random, re, subprocess
+
+def get_current_mac(interface):
+    """
+    Get current MAC address of a given interface.
+    """
+    try:
+        result = subprocess.run(
+            ["ip", "link", "show", interface],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        match = re.search(r"link/ether ([0-9a-f:]{17})", result.stdout)
+
+        if match:
+            return match.group(1)
+        else:
+            return None
+
+    except subprocess.CalledProcessError:
+        return None
+
 
 def generate_mac():
     """
