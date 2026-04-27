@@ -5,7 +5,8 @@ from mac_utils import (
     validate_mac,
     get_current_mac,
     change_mac,
-    reset_mac
+    reset_mac,
+    get_interfaces
 )
 
 
@@ -21,6 +22,13 @@ def main():
     args = parser.parse_args()
 
     interface = args.interface
+
+    available_interfaces = get_interfaces()
+
+    if interface not in available_interfaces:
+        print("[-] Invalid interface")
+        print(f"[i] Available interfaces: {', '.join(available_interfaces)}")
+        return
 
     if args.show:
         mac = get_current_mac(interface)
