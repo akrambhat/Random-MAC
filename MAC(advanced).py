@@ -1,3 +1,5 @@
+# Deprecated: Use mac_tool.py instead
+
 # Version (0.2) Advanced Version
 """ Works with all systems """
 import os
