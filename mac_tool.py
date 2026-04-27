@@ -39,7 +39,7 @@ def main():
             updated_mac = get_current_mac(interface)
             print(f"[+] MAC changed: {old_mac} → {updated_mac}")
         else:
-            print("[-] Failed to change MAC")
+            print("[-] Failed to change MAC (check interface name or permissions)")
 
     elif args.set:
         if not validate_mac(args.set):
@@ -54,7 +54,7 @@ def main():
             updated_mac = get_current_mac(interface)
             print(f"[+] MAC changed: {old_mac} → {updated_mac}")
         else:
-            print("[-] Failed to change MAC")
+            print("[-] Failed to change MAC (check interface name or permissions)")
 
     elif args.reset:
         success = reset_mac(interface)
@@ -62,7 +62,7 @@ def main():
         if success:
             print("[+] MAC reset successfully")
         else:
-            print("[-] Failed to reset MAC")
+            print("[-] Failed to reset MAC (check interface or permissions)")
 
     else:
         print("[-] No valid option provided. Use --help")
