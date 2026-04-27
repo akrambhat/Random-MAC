@@ -19,6 +19,7 @@ def main():
     parser.add_argument("--reset", action="store_true", help="Reset MAC address")
     parser.add_argument("--show", action="store_true", help="Show current MAC address")
     parser.add_argument("--list", action="store_true", help="List available network interfaces")
+    parser.add_argument("--dry-run", action="store_true", help="Show what would happen without applying changes")
 
     args = parser.parse_args()
 
@@ -59,6 +60,10 @@ def main():
         old_mac = get_current_mac(interface)
         new_mac = generate_mac()
 
+        if args.dry_run:
+            print(f"[DRY-RUN] Would change MAC: {old_mac} → {new_mac}")
+            return
+
         success = change_mac(interface, new_mac)
 
         if success:
@@ -66,13 +71,17 @@ def main():
             print(f"[+] MAC changed: {old_mac} → {updated_mac}")
         else:
             print("[-] Failed to change MAC (check interface name or permissions)")
-
+            
     elif args.set:
         if not validate_mac(args.set):
             print("[-] Invalid MAC format")
             return
 
         old_mac = get_current_mac(interface)
+
+        if args.dry_run:
+            print(f"[DRY-RUN] Would change MAC: {old_mac} → {args.set}")
+            return
 
         success = change_mac(interface, args.set)
 
@@ -83,10 +92,17 @@ def main():
             print("[-] Failed to change MAC (check interface name or permissions)")
 
     elif args.reset:
+        old_mac = get_current_mac(interface)
+
+        if args.dry_run:
+            print(f"[DRY-RUN] Would reset MAC for interface: {interface} (current: {old_mac})")
+            return
+
         success = reset_mac(interface)
 
         if success:
-            print("[+] MAC reset successfully")
+            updated_mac = get_current_mac(interface)
+            print(f"[+] MAC reset: {old_mac} → {updated_mac}")
         else:
             print("[-] Failed to reset MAC (check interface or permissions)")
 
