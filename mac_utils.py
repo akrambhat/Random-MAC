@@ -76,3 +76,24 @@ def change_mac(interface, new_mac):
 
     except subprocess.CalledProcessError:
         return False
+
+def reset_mac(interface):
+    """
+    Reset MAC address by restarting the interface.
+    Note: This typically restores the original MAC address.
+    """
+    try:
+        subprocess.run(
+            ["sudo", "ip", "link", "set", "dev", interface, "down"],
+            check=True
+        )
+
+        subprocess.run(
+            ["sudo", "ip", "link", "set", "dev", interface, "up"],
+            check=True
+        )
+
+        return True
+
+    except subprocess.CalledProcessError:
+        return False
