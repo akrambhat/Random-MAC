@@ -1,33 +1,18 @@
 # Random MAC Tool
 
-A Python-based utility for changing MAC addresses on Linux systems.
+A Python-based CLI utility to generate, change, and manage MAC addresses on Linux systems.
 
 ---
 
-## Current Status
+## Features
 
-This project is currently being refactored from standalone scripts into a modular CLI-based tool.
-
-* Existing scripts (`MAC(basic).py`, `MAC(advanced).py`) are functional
-* New modular structure (`mac_tool.py`, `mac_utils.py`) has been introduced
-* CLI features and improvements are under development
-
----
-
-## Project Structure
-
-```
-Random-MAC/
-│
-├── mac_tool.py          # CLI entry point (work in progress)
-├── mac_utils.py         # Core logic (work in progress)
-│
-├── MAC(basic).py        # Legacy script (uses ifconfig)
-├── MAC(advanced).py     # Legacy script (uses ip link)
-│
-├── README.md
-└── LICENSE
-```
+* Generate valid random MAC addresses
+* Set custom MAC addresses
+* Reset MAC address
+* Display current MAC address
+* List available network interfaces
+* Validate interface before execution
+* Dry-run mode to preview changes without applying them
 
 ---
 
@@ -36,21 +21,46 @@ Random-MAC/
 * Linux-based OS
 * Python 3.x
 * Root privileges (sudo)
+* `ip` command available
 
 ---
 
-## Current Usage (Legacy Scripts)
+## Usage
 
-### Basic Version
-
-```
-python MAC(basic).py
-```
-
-### Advanced Version
+### List available interfaces
 
 ```
-python MAC(advanced).py
+python mac_tool.py --list
+```
+
+### Show current MAC
+
+```
+python mac_tool.py --interface wlan0 --show
+```
+
+### Apply random MAC
+
+```
+python mac_tool.py --interface wlan0 --random
+```
+
+### Set custom MAC
+
+```
+python mac_tool.py --interface wlan0 --set 00:11:22:33:44:55
+```
+
+### Reset MAC
+
+```
+python mac_tool.py --interface wlan0 --reset
+```
+
+### Dry run (no changes applied)
+
+```
+python mac_tool.py --interface wlan0 --random --dry-run
 ```
 
 ---
@@ -58,19 +68,8 @@ python MAC(advanced).py
 ## Notes
 
 * Changes are temporary and reset after reboot
-* Works only on Linux systems
 * Requires root privileges
-
----
-
-## Roadmap
-
-* [ ] Remove hardcoded interface names
-* [ ] Add proper MAC generation (valid hex format)
-* [ ] Implement CLI using argparse
-* [ ] Add input validation
-* [ ] Improve error handling
-* [ ] Deprecate legacy scripts
+* Works on Linux systems only
 
 ---
 
