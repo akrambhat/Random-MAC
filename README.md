@@ -1,4 +1,4 @@
-# Random MAC Tool
+# RanMac Tool
 
 A Python-based CLI utility to generate, change, and manage MAC addresses on Linux systems.
 
